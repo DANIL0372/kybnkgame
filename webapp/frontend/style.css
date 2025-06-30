@@ -1,0 +1,140 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+    color: white;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+}
+
+.coin-count {
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.stats {
+    display: flex;
+    gap: 15px;
+    font-size: 18px;
+}
+
+.stats div {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.click-area {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    margin: 0 auto 30px;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.click-area:active {
+    transform: scale(0.95);
+}
+
+.coin {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.7));
+}
+
+.click-effect {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 30px;
+    font-weight: bold;
+    color: gold;
+    opacity: 0;
+    pointer-events: none;
+    animation: floatUp 1s ease-out;
+}
+
+@keyframes floatUp {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -150%);
+    }
+}
+
+.upgrades {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    max-height: 40vh;
+    overflow-y: auto;
+}
+
+.upgrade-card {
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    padding: 15px;
+    text-align: left;
+}
+
+.upgrade-info {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.upgrade-btn {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(to right, #ffcc00, #ff9500);
+    border: none;
+    border-radius: 10px;
+    color: #333;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.1s, background 0.2s;
+}
+
+.upgrade-btn:active {
+    transform: scale(0.95);
+}
+
+.upgrade-btn:disabled {
+    background: #555;
+    color: #999;
+    cursor: not-allowed;
+}
