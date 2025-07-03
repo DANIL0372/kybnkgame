@@ -1,5 +1,0 @@
-flask
-flask-cors
-redis
-python-dotenv
-gunicorn
