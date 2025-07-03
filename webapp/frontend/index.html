@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KYBNK SHOW</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <button class="btn close-btn">
+                <i class="fas fa-times"></i> CLOSE
+            </button>
+            <div class="logo">KYBNK SHOW</div>
+            <div class="user-info">
+                <div class="username" id="username">GRAUNDASTER&gt;9/11</div>
+                <div class="coins">+<span id="hourly-income">4.57M</span></div>
+            </div>
+            <button class="btn profile-btn" id="profile-btn">
+                <i class="fas fa-user"></i>
+            </button>
+            <button class="btn settings-btn" id="settings-btn">
+                <i class="fas fa-cog"></i>
+            </button>
+        </div>
+
+        <!-- Main Game Area (Home Screen) -->
+        <div class="screen home-screen active">
+            <div class="main-score" id="main-score">222,566,074</div>
+
+            <div class="brand-logo">
+                <div class="kybnk">KYBNK</div>
+                <div class="show">SHOW</div>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-text" id="progress-text">8450/8500</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <button class="btn boost-btn" id="boost-btn">
+                    <i class="fas fa-bolt"></i> BOOST
+                </button>
+            </div>
+
+            <div class="click-counter">
+                Клики: <span id="clicks-count">5</span>/<span id="max-clicks">10</span>
+            </div>
+        </div>
+
+        <!-- Mine Screen (Upgrades) -->
+        <div class="screen mine-screen">
+            <h2>УЛУЧШЕНИЯ ШАХТЫ</h2>
+
+            <div class="upgrade-card">
+                <div class="upgrade-info">
+                    <h3>Мощность клика</h3>
+                    <p>+100 монет за клик</p>
+                    <div class="level">Уровень: <span id="click-power-level">1</span></div>
+                </div>
+                <button class="btn upgrade-btn" data-type="click-power">
+                    Купить: <span id="click-power-cost">100</span> монет
+                </button>
+            </div>
+
+            <div class="upgrade-card">
+                <div class="upgrade-info">
+                    <h3>Количество кликов</h3>
+                    <p>+5 максимальных кликов</p>
+                    <div class="level">Уровень: <span id="clicks-capacity-level">1</span></div>
+                </div>
+                <button class="btn upgrade-btn" data-type="clicks-capacity">
+                    Купить: <span id="clicks-capacity-cost">200</span> монет
+                </button>
+            </div>
+
+            <div class="upgrade-card">
+                <div class="upgrade-info">
+                    <h3>Доход в час</h3>
+                    <p>+1M монет в час</p>
+                    <div class="level">Уровень: <span id="hourly-income-level">1</span></div>
+                </div>
+                <button class="btn upgrade-btn" data-type="hourly-income">
+                    Купить: <span id="hourly-income-cost">500</span> монет
+                </button>
+            </div>
+
+            <div class="upgrade-card">
+                <div class="upgrade-info">
+                    <h3>Автоматическая добыча</h3>
+                    <p>+0.5M монет в час</p>
+                    <div class="level">Уровень: <span id="auto-mine-level">0</span></div>
+                </div>
+                <button class="btn upgrade-btn" data-type="auto-mine">
+                    Купить: <span id="auto-mine-cost">1000</span> монет
+                </button>
+            </div>
+        </div>
+
+        <!-- Friends Screen -->
+        <div class="screen friends-screen">
+            <h2>ДРУЗЬЯ И ЛИДЕРЫ</h2>
+
+            <div class="referral-section">
+                <h3>Ваша реферальная ссылка:</h3>
+                <div class="referral-link" id="referral-link">https://t.me/kybnkshow_bot?start=ref_12345</div>
+                <button class="btn copy-btn" id="copy-btn">
+                    <i class="fas fa-copy"></i> Копировать
+                </button>
+            </div>
+
+            <div class="leaderboard">
+                <h3>Топ друзей:</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Имя</th>
+                            <th>Уровень</th>
+                            <th>Монеты</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-body">
+                        <!-- Filled by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn active" data-screen="home-screen">
+                <i class="fas fa-home"></i> HOME
+            </button>
+            <button class="nav-btn" data-screen="mine-screen">
+                <i class="fas fa-hard-hat"></i> MINE
+            </button>
+            <button class="nav-btn" data-screen="friends-screen">
+                <i class="fas fa-user-friends"></i> FRIENDS
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
