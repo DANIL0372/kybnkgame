@@ -1,148 +1,108 @@
 <!DOCTYPE html>
 <html lang="ru">
+<script>
+// Фиктивный User-Agent для обхода проверки ngrok
+Object.defineProperty(navigator, 'userAgent', {
+    value: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+    configurable: false,
+    writable: false
+});
+
+// Альтернативный метод: добавить мета-тег
+const meta = document.createElement('meta');
+meta.name = "user-agent";
+meta.content = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36";
+document.head.appendChild(meta);
+</script>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.ngrok-free.app https://telegram.org; img-src 'self' data: https://*; connect-src 'self' https://*;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>KYBNK SHOW</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div class="container">
-        <!-- Top Bar -->
-        <div class="top-bar">
-            <button class="btn close-btn">
-                <i class="fas fa-times"></i> CLOSE
-            </button>
-            <div class="logo">KYBNK SHOW</div>
-            <div class="user-info">
-                <div class="username" id="username">GRAUNDASTER&gt;9/11</div>
-                <div class="coins">+<span id="hourly-income">4.57M</span></div>
-            </div>
-            <button class="btn profile-btn" id="profile-btn">
-                <i class="fas fa-user"></i>
-            </button>
-            <button class="btn settings-btn" id="settings-btn">
-                <i class="fas fa-cog"></i>
-            </button>
-        </div>
-
-        <!-- Main Game Area (Home Screen) -->
-        <div class="screen home-screen active">
-            <div class="main-score" id="main-score">222,566,074</div>
-
-            <div class="brand-logo">
-                <div class="kybnk">KYBNK</div>
-                <div class="show">SHOW</div>
-            </div>
-
-            <div class="progress-container">
-                <div class="progress-text" id="progress-text">8450/8500</div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill"></div>
+    <div class="app-container">
+        <!-- Верхний блок -->
+        <header class="header">
+            <div class="profile-section">
+                <img src="{{ url_for('static', filename='img/profile.png') }}" alt="Profile" class="profile-icon">
+                <div class="user-info">
+                    <div class="username editable" id="username">PLAYER</div>
+                    <div class="user-tag" id="userTag">NEWBIE=0/11</div>
                 </div>
-                <button class="btn boost-btn" id="boost-btn">
-                    <i class="fas fa-bolt"></i> BOOST
-                </button>
             </div>
 
-            <div class="click-counter">
-                Клики: <span id="clicks-count">5</span>/<span id="max-clicks">10</span>
-            </div>
-        </div>
-
-        <!-- Mine Screen (Upgrades) -->
-        <div class="screen mine-screen">
-            <h2>УЛУЧШЕНИЯ ШАХТЫ</h2>
-
-            <div class="upgrade-card">
-                <div class="upgrade-info">
-                    <h3>Мощность клика</h3>
-                    <p>+100 монет за клик</p>
-                    <div class="level">Уровень: <span id="click-power-level">1</span></div>
+            <div class="controls-section">
+                <div class="control-icon">
+                    <img src="{{ url_for('static', filename='img/profile_2.png') }}" alt="Profile">
                 </div>
-                <button class="btn upgrade-btn" data-type="click-power">
-                    Купить: <span id="click-power-cost">100</span> монет
-                </button>
+                <div class="control-icon">
+                    <img src="{{ url_for('static', filename='img/settings.png') }}" alt="Settings">
+                </div>
+                <div class="income-info">
+                    <img src="{{ url_for('static', filename='img/dollar_2.png') }}" alt="Income">
+                    <span id="hourlyIncome">+0/час</span>
+                </div>
             </div>
 
-            <div class="upgrade-card">
-                <div class="upgrade-info">
-                    <h3>Количество кликов</h3>
-                    <p>+5 максимальных кликов</p>
-                    <div class="level">Уровень: <span id="clicks-capacity-level">1</span></div>
+            <div class="progress-section">
+                <div class="progress-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                    <div class="progress-level" id="progressLevel">LEVEL 0</div>
                 </div>
-                <button class="btn upgrade-btn" data-type="clicks-capacity">
-                    Купить: <span id="clicks-capacity-cost">200</span> монет
-                </button>
+            </div>
+        </header>
+
+        <!-- Центральная игровая область -->
+        <main class="game-area">
+            <div class="coin-container" id="clickArea">
+                <img src="{{ url_for('static', filename='img/coin.png') }}" alt="Coin" class="coin">
+                <div class="balance-display">
+                    <span id="balance">0</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- Нижняя панель управления -->
+        <div class="stats-panel">
+            <div class="click-info">
+                <img src="{{ url_for('static', filename='img/click.png') }}" alt="Clicks">
+                <span id="clickCounter">50/50</span>
             </div>
 
-            <div class="upgrade-card">
-                <div class="upgrade-info">
-                    <h3>Доход в час</h3>
-                    <p>+1M монет в час</p>
-                    <div class="level">Уровень: <span id="hourly-income-level">1</span></div>
-                </div>
-                <button class="btn upgrade-btn" data-type="hourly-income">
-                    Купить: <span id="hourly-income-cost">500</span> монет
-                </button>
-            </div>
-
-            <div class="upgrade-card">
-                <div class="upgrade-info">
-                    <h3>Автоматическая добыча</h3>
-                    <p>+0.5M монет в час</p>
-                    <div class="level">Уровень: <span id="auto-mine-level">0</span></div>
-                </div>
-                <button class="btn upgrade-btn" data-type="auto-mine">
-                    Купить: <span id="auto-mine-cost">1000</span> монет
-                </button>
+            <div class="boost-info" id="boostBtn">
+                <img src="{{ url_for('static', filename='img/boost-icon.png') }}" alt="Boost">
+                <span id="boostTimer">BOOST</span>
             </div>
         </div>
 
-        <!-- Friends Screen -->
-        <div class="screen friends-screen">
-            <h2>ДРУЗЬЯ И ЛИДЕРЫ</h2>
-
-            <div class="referral-section">
-                <h3>Ваша реферальная ссылка:</h3>
-                <div class="referral-link" id="referral-link">https://t.me/kybnkshow_bot?start=ref_12345</div>
-                <button class="btn copy-btn" id="copy-btn">
-                    <i class="fas fa-copy"></i> Копировать
-                </button>
-            </div>
-
-            <div class="leaderboard">
-                <h3>Топ друзей:</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Имя</th>
-                            <th>Уровень</th>
-                            <th>Монеты</th>
-                        </tr>
-                    </thead>
-                    <tbody id="leaderboard-body">
-                        <!-- Filled by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Navigation -->
-        <div class="navigation">
-            <button class="nav-btn active" data-screen="home-screen">
-                <i class="fas fa-home"></i> HOME
+        <!-- Нижнее меню -->
+        <nav class="nav-menu">
+            <button class="nav-btn active" id="homeBtn">
+                <img src="{{ url_for('static', filename='img/home.png') }}" alt="Home">
+                <span>HOME</span>
             </button>
-            <button class="nav-btn" data-screen="mine-screen">
-                <i class="fas fa-hard-hat"></i> MINE
+            <button class="nav-btn" id="mineBtn">
+                <img src="{{ url_for('static', filename='img/mine.png') }}" alt="Mine">
+                <span>MINE</span>
             </button>
-            <button class="nav-btn" data-screen="friends-screen">
-                <i class="fas fa-user-friends"></i> FRIENDS
+            <button class="nav-btn" id="friendsBtn">
+                <img src="{{ url_for('static', filename='img/friends.png') }}" alt="Friends">
+                <span>FRIENDS</span>
             </button>
-        </div>
+        </nav>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Подключаем скрипты -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="/static/js/script.js"></script>
+
+<button id="resetButton" style="position:fixed; bottom:10px; left:10px; background:red; color:white; padding:5px 10px; z-index:1000;">
+    Сбросить прогресс
+</button>
+
 </body>
 </html>
