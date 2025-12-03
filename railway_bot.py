@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 import os
 import logging
-from telegram.ext import Updater, CommandHandler
+from telegram import Update
+from telegram.ext import Application, CommandHandler, ContextTypes
 
 # Настройка логирования
 logging.basicConfig(
@@ -10,12 +11,16 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Токен бота
 BOT_TOKEN = os.environ.get('BOT_TOKEN', '7730710795:AAFiL2yQyd49Vm7mcUr7idbG1b59jozhGaU')
 
-def start(update, context):
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработчик команды /start"""
-    user = update.effective_user
-    welcome_text = f"""🎮 <b>Добро пожаловать в KYBNK GAME, {user.first_name}!</b>
+    try:
+        user = update.effective_user
+        user_id = str(user.id)
+        
+        welcome_text = f"""🎮 <b>Добро пожаловать в KYBNK GAME, {user.first_name}!</b>
 
 🚀 Игра доступна по ссылке:
 https://kybnkgame-production.up.railway.app/
@@ -25,13 +30,17 @@ https://kybnkgame-production.up.railway.app/
 👥 Приглашай друзей и получай бонусы
 
 🔗 <b>Ваша реферальная ссылка:</b>
-https://t.me/kybnk_show_bot?start=ref_{user.id}
+https://t.me/kybnk_show_bot?start=ref_{user_id}
 
 Пригласи друга и получи 2000 токенов!"""
-    
-    update.message.reply_text(welcome_text, parse_mode='HTML')
+        
+        await update.message.reply_text(welcome_text, parse_mode='HTML')
+        logger.info(f"✅ Ответил на /start пользователю {user_id}")
+        
+    except Exception as e:
+        logger.error(f"❌ Ошибка в команде start: {e}")
 
-def help_command(update, context):
+async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработчик команды /help"""
     help_text = """📚 <b>Команды бота:</b>
 /start - Начать игру
@@ -46,24 +55,36 @@ https://kybnkgame-production.up.railway.app/
 📺 <b>Наш канал:</b>
 @kybnk_show"""
     
-    update.message.reply_text(help_text, parse_mode='HTML')
+    await update.message.reply_text(help_text, parse_mode='HTML')
+
+async def status(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Проверка статуса бота"""
+    await update.message.reply_text("✅ Бот работает исправно!")
 
 def main():
-    """Основная функция"""
-    logger.info("🚀 Запуск бота KYBNK...")
-    
-    # Создаем Updater (старый стиль, но надежный)
-    updater = Updater(BOT_TOKEN, use_context=True)
-    dispatcher = updater.dispatcher
-    
-    # Добавляем обработчики
-    dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CommandHandler("help", help_command))
-    
-    # Запускаем бота
-    logger.info("🤖 Бот запущен и готов к работе")
-    updater.start_polling()
-    updater.idle()
+    """Основная функция запуска бота"""
+    try:
+        logger.info("🚀 Запуск бота KYBNK...")
+        
+        # Создаем Application (новый стиль для v20.x)
+        application = Application.builder().token(BOT_TOKEN).build()
+        
+        # Добавляем обработчики команд
+        application.add_handler(CommandHandler("start", start))
+        application.add_handler(CommandHandler("help", help_command))
+        application.add_handler(CommandHandler("status", status))
+        
+        # Запускаем бота в режиме polling
+        logger.info("🤖 Бот запущен и готов к работе...")
+        application.run_polling(
+            poll_interval=3.0,
+            timeout=20,
+            drop_pending_updates=True
+        )
+        
+    except Exception as e:
+        logger.error(f"❌ Критическая ошибка: {e}")
+        raise
 
 if __name__ == '__main__':
     main()
